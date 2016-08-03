@@ -19,8 +19,8 @@ app.post('/addLink', function(req, res) {
   console.log('adding link: ', req.body);
 });
 
-app.get('/viewStatus', function(req, res) {
-  console.log('requested archived url!');
+app.post('/searchArchive', function(req, res) {
+  console.log('requested archived url!: ', req.body);
 })
 
 app.listen(port);

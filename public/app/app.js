@@ -26,9 +26,16 @@ app.controller('addLinkController', function($scope, $http){
 });
 
 app.controller('viewStatusController', function($scope, $http) {
-  $http.get('/getArchived').then(function(res) {
-    $scope.archivedData = res.data;
-  })
+  $scope.archivedData = "";
+  $scope.jobId = {
+    id: ""
+  };
+  $scope.getArchived = function() {
+    $http.post('/searchArchive', $scope.jobId)
+    .then(function(res) {
+      $scope.archivedData = res.data;
+    })
+  };
 });
 
 
