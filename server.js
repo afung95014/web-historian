@@ -11,47 +11,48 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
 
 //connect database
-var pg = require('pg');
-var path = require('path');
-var connectionString = require(path.join(__dirname,'db/config.js'));
-console.log('db connected at:', connectionString);
+var pgpLib = require('pg-promise');
+var pgp = pgpLib();
+var connectionString = require('./db/config');
+var db = pgp(connectionString);
 
 //routes
 app.get('/', function(req, res) {
   res.sendFile(__dirname + '/index.html')
 });
 
-app.post('/addLink', function(req, res) {
-  console.log('adding link: ', req.body.url);
-  var data = req.body.url;
-  var result = [];
+app.post('/addLink', function(req, res, next) {
+  var data = "'" + req.body.url + "'";
+  db.one("insert into sites(url, archived) values($1, $2) returning id", [data, false])
+    .then(function (data) {
+        console.log(data.id); // print new user id;
+        res.json(data.id);
+    })
+    .catch(function (error) {
+        console.log("ERROR:", error.message || error); // print error;
+    });
+  // db.one("select * from sites where url = " + "'" + data + "'" + ";")
+  // .then(function(response) {
+  // 	console.log('is this working?: ', response);
 
-  pg.connect(connectionString, function(err, client, done) {
-  	//Handle connection errors
-  	if(err) {
-  	  done();
-  	  console.log(err);
-  	  return res.status(500).send(json({success: false, data: err}));
-  	}
-
-  	//SQL query
-  	var query = client.query('INSERT INTO sites (url, archived) VALUES ("' + data + '", false) WHERE NOT EXISTS (SELECT * FROM sites WHERE url =' + data + ')');
-
-  	query.on('row', function(row) {
-  	  console.log(row);
-  	  result.push(row);
-  	});
-
-  	query.on('end', function() {
-  	  done();
-  	  return res.json(result);
-  	});
-
-  });
+  // })
 });
 
 app.post('/searchArchive', function(req, res) {
   console.log('requested archived url!: ', req.body);
+  var id = req.body.id;
+  db.one("select * from sites where id = $1",[id])
+    .then(function(data) {
+      console.log(data);
+      if(data.archived === false) {
+      	res.json(data);
+      } else {
+      	console.log('data ready to display!');
+      }
+    })
+    .catch(function(err) {
+      console.log(err);
+    })
 });
 
 

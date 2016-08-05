@@ -17,23 +17,35 @@ app.config(function($routeProvider) {
 });
 
 app.controller('addLinkController', function($scope, $http){
+  $scope.jobId = " ";
+  $scope.showJobId = false;
   $scope.link = {
     url: ""
   };
   $scope.addLink = function() {
-    $http.post('/addLink', $scope.link);
+    $http.post('/addLink', $scope.link)
+    .then(function(res) {
+      console.log(res.data);
+      $scope.jobId = res.data;
+    })
   };
 });
 
 app.controller('viewStatusController', function($scope, $http) {
-  $scope.archivedData = "";
+  $scope.showJobStatus = false;
+  $scope.archivedData = "archivedData";
   $scope.jobId = {
     id: ""
   };
   $scope.getArchived = function() {
     $http.post('/searchArchive', $scope.jobId)
     .then(function(res) {
-      $scope.archivedData = res.data;
+      console.log(res);
+      if(res.data.archived === false) {
+        $scope.archivedData = 'The url ' + res.data.url + ' has not been archived yet. Please check back again later!';
+      } else {
+        $scope.archivedData = res.data.data;  
+      }
     })
   };
 });

@@ -4,9 +4,9 @@
   <input type="text" class="form-control" id="jobId" placeholder="Enter job ID" ng-model="jobId.id">
 </div>
 
-<button style='float:right'type = "submit" class = "btn btn-default">Submit</button>
+<button style='float:right'type = "submit" class = "btn btn-default" ng-click='showJobStatus = true'>Submit</button>
 </form>
 
-<pre>
-    {{ jobId }}
-</pre>
+<div ng-show='showJobStatus'>
+  <p>{{ archivedData }}</p>
+</div>
