@@ -11,7 +11,6 @@ module.exports = function(app) {
   });
 
   app.post('/searchArchive', function(req, res) {
-    console.log('requested archived url!: ', req.body);
     var id = req.body.id;
     helpers.getDataStatus(res, id);
   });

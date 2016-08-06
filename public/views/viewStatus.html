@@ -1,12 +1,13 @@
-<form class = "form-horizontal" role = "form" ng-submit='getArchived()'>
-	<div class="form-group">
-  <label for="jobId" class="col-sm-2 control-label">Job ID</label>
-  <input type="text" class="form-control" id="jobId" placeholder="Enter job ID" ng-model="jobId.id">
-</div>
+<p>Enter the Job ID # associated with your Url</p>
 
-<button type = "submit" class = "btn btn-default" ng-click='showJobStatus = true'>Submit</button>
+<form class = "form-horizontal" role = "form" ng-submit='getArchived()'>
+  <div class="form-group">
+    <input type="text" class="form-control" id="jobId" placeholder="Enter job ID" ng-model="jobId.id">
+    <button type = "submit" class = "btn btn-default" ng-click='showJobStatus = true'>Submit</button>
+  </div>
 </form>
 
 <div ng-show='showJobStatus'>
+  <div> {{archiveStatus}} </div>
   <div ng-bind-html='archivedData'></div>
 </div>

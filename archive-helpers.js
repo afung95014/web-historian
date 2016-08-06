@@ -19,7 +19,7 @@ exports.getDataStatus = function(res, id) {
     .then(function(data) {
       if(data.archived === false) {
       	console.log('data not ready!');
-      	res.sendStatus(400);
+      	res.sendStatus(204);
       } else {
       	console.log('data ready to display!');
       	res.json(data);
@@ -27,6 +27,7 @@ exports.getDataStatus = function(res, id) {
     })
     .catch(function(err) {
       console.log(err);
+      res.sendStatus(404);
     });
 };
 

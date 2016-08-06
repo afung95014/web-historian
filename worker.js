@@ -10,6 +10,7 @@ var helpers = require('./archive-helpers');
 
 setInterval(function() {
   db.each('select * from sites where archived = false', [], function(site) {
+  	console.log(site);
     helpers.downloadUrl(site);
   })
     .catch(function(err) {
