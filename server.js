@@ -10,11 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
 
-//connect database
-var pgpLib = require('pg-promise');
-var pgp = pgpLib();
-var connectionString = require('./db/config');
-var db = pgp(connectionString);
+var helpers = require('./archive-helpers');
 
 //routes
 app.get('/', function(req, res) {
@@ -23,36 +19,13 @@ app.get('/', function(req, res) {
 
 app.post('/addLink', function(req, res, next) {
   var data = "'" + req.body.url + "'";
-  db.one("insert into sites(url, archived) values($1, $2) returning id", [data, false])
-    .then(function (data) {
-        console.log(data.id); // print new user id;
-        res.json(data.id);
-    })
-    .catch(function (error) {
-        console.log("ERROR:", error.message || error); // print error;
-    });
-  // db.one("select * from sites where url = " + "'" + data + "'" + ";")
-  // .then(function(response) {
-  // 	console.log('is this working?: ', response);
-
-  // })
+  helpers.addEntry(res, data);
 });
 
 app.post('/searchArchive', function(req, res) {
   console.log('requested archived url!: ', req.body);
   var id = req.body.id;
-  db.one("select * from sites where id = $1",[id])
-    .then(function(data) {
-      console.log(data);
-      if(data.archived === false) {
-      	res.json(data);
-      } else {
-      	console.log('data ready to display!');
-      }
-    })
-    .catch(function(err) {
-      console.log(err);
-    })
+  helpers.getDataStatus(res, id);
 });
 
 
