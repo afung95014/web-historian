@@ -1,6 +1,6 @@
 var pgpLib = require('pg-promise');
 var pgp = pgpLib();
-var connectionString = require('./db/config');
+var connectionString = require('../db/config');
 var db = pgp(connectionString);
 var request = require('request');
 
@@ -38,7 +38,7 @@ exports.downloadUrl = function(entry) {
   request('http://' + formattedUrl, function(error, response, body) {
     if(!error && response.statusCode == 200) {
   	  urlData = body;
-	  db.none('update sites set archived = $1, data = $2 where id = $3', [true, urlData, entry.id])
+	  db.none('update sites set archived = $1, data = $2 where id = $3', [true, formattedUrl, entry.id])
 	    .then(function(response) {
 	      console.log('entry is archived!');
 	    })
