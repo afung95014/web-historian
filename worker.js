@@ -9,13 +9,9 @@ var helpers = require('./archive-helpers');
 //it will archive any sites that have not been archived yet
 
 setInterval(function() {
-  db.any('select * from sites where archived = false')
-    .then(function(data) {
-      console.log(data);
-      data.forEach(function(entry) {
-      	helpers.downloadUrl(entry);
-      });
-    })
+  db.each('select * from sites where archived = false', [], function(site) {
+    helpers.downloadUrl(site);
+  })
     .catch(function(err) {
       console.log(err);
     });
