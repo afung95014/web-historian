@@ -1,11 +1,11 @@
 var pgpLib = require('pg-promise');
 var pgp = pgpLib();
-var connectionString = require('../db/config');
+var connectionString = require('./db/config');
 var db = pgp(connectionString);
 var helpers = require('./archive-helpers');
 
 
-//when worker.js runs, it will do work every 60 seconds
+//when worker.js runs, it will do work every 10 seconds
 //it will archive any sites that have not been archived yet
 
 setInterval(function() {
@@ -19,4 +19,4 @@ setInterval(function() {
     .catch(function(err) {
       console.log(err);
     });
-}, 60000);
+}, 10000);

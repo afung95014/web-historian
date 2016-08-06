@@ -2,7 +2,7 @@ var helpers = require('./archive-helpers');
 
 module.exports = function(app) {
   app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/index.html')
+    res.sendFile(__dirname + '/index.html');
   });
 
   app.post('/addLink', function(req, res, next) {

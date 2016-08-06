@@ -1,5 +1,10 @@
 # web-historian
-fetches the HTML from a URL and stores the result
+
+### Summary
+Fetches the HTML from a URL and stores the result. 
+
+### Flow
+User inputs a URL and gets back a job ID. Every 10 seconds, the web worker will archive the HTML of any URLs that have not been archived yet. User can check back and see if their URL has been archived yet by inputting the job ID associated with that URL. If the data from that URL has been archived, user will be able see the HTML from that site.
 
 ## Requirements
 

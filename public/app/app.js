@@ -31,7 +31,7 @@ app.controller('addLinkController', function($scope, $http){
   };
 });
 
-app.controller('viewStatusController', function($scope, $http) {
+app.controller('viewStatusController', function($scope, $http, $sce) {
   $scope.showJobStatus = false;
   $scope.archivedData = "archivedData";
   $scope.jobId = {
@@ -44,7 +44,7 @@ app.controller('viewStatusController', function($scope, $http) {
       if(res.data.archived === false) {
         $scope.archivedData = 'The url ' + res.data.url + ' has not been archived yet. Please check back again later!';
       } else {
-        $scope.archivedData = res.data.data;  
+        $scope.archivedData = $sce.trustAsHtml(res.data.data);  
       }
     })
   };
